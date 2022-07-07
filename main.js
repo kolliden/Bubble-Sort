@@ -8,6 +8,7 @@ canvas.width = 0;
 canvas.height = 0;
 
 ctx.fillStyle = '#C0C0C0';
+ctx.globalCompositeOperation="destination-atop";
 // ctx.lineWidth = 8;
 
 let condition = true;
@@ -129,10 +130,26 @@ function ArrayMember(x, y, width, height, color = "gray") {
   this.width = width;
   this.height = height;
   this.color = color;
+  this.renderStyle = 'filled';
 
   this.draw = () => {
     ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    switch (this.renderStyle) {
+      case 'filled':
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        break;
+      case 'outlined':
+        ctx.beginPath();
+        ctx.lineWidth = "2";
+        ctx.strokeStyle = this.color;
+        ctx.rect(this.x, this.y, this.width, this.height);
+        ctx.stroke();
+        break;
+      case 'other visualisation':
+        break;
+      default:
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
   };
 
   this.resetColor = () => this.setColor("gray");
